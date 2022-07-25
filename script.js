@@ -1,5 +1,5 @@
 const precioProductoString = document.getElementById("precioProducto")
-const elegirProducto = document.getElementById("elegirProducto").value
+const elegirProducto = document.getElementById("elegirProducto")
 const calcular = document.getElementById('calcular')
 const reiniciar = document.getElementById('reinicio')
 const mostrarCalculo = document.getElementById('calculo')
@@ -9,6 +9,7 @@ let productosLista = []
 console.log(elegirProducto)
 
 calcular.addEventListener('click', () => validarInput())
+elegirProducto.addEventListener('change', () => mostrarProductoAnterior())
 reiniciar.addEventListener('click', () => LimpiarHTML())
 
 
@@ -55,12 +56,45 @@ function agregarAlArray(precioProducto) {
         id: Date.now(),
         producto: nombreProducto,
         precio: precioProducto
-   }
+    }
 
-   productosLista = [...productosLista, productoObj]
+    productosLista = [...productosLista, productoObj]
 
-   console.log(productosLista)
-   
+    console.log(productosLista)
+
+    while (elegirProducto.firstChild) {
+        elegirProducto.removeChild(elegirProducto.firstChild)
+    }
+
+    agregarAlSelect()
+}
+
+//Agregar producto al select
+function agregarAlSelect() {
+    productosLista.forEach(producto => {
+        const elem = document.createElement('option');
+        elem.innerHTML = `
+             ${producto.producto}
+        `;
+        elegirProducto.appendChild(elem);
+    });
+
+
+}
+
+function mostrarProductoAnterior() {
+    LimpiarHTML()
+    const elegirProductoValue = document.getElementById("elegirProducto").value
+    console.log(elegirProductoValue)
+
+    let mostrarProd = productosLista.filter(prod => prod.producto == `${elegirProductoValue}`)
+    console.log(mostrarProd);
+
+    const parrafo = document.createElement('div');
+    parrafo.innerHTML = `<p>Producto: $${}</p> 
+                         <p>El precio en 6 cuotas es: $${seisCuotas}. El total es el mismo </p>
+                         <p>El precio en 12 cuotas con recargo es: $${doceCuotas}. El total es de $${totalEnDoce}</p>`
+    mostrarCalculo.appendChild(parrafo);
 }
 
 //Limpiar formulario
@@ -68,7 +102,9 @@ function LimpiarHTML() {
     while (mostrarCalculo.firstChild) {
         mostrarCalculo.removeChild(mostrarCalculo.firstChild);
     }
+
     reiniciar.disabled = true
     precioProductoString.value = ''
+    document.getElementById('nombreProducto').value = ''
     calcular.disabled = false
 }
