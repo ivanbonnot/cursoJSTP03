@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="//res.cloudinary.com/hdsqazxtw/image/upload/v1558445734/favicon-32x32_fy92aq.png">
-    <title>TP02</title>
-  </head>
-  <body>
-    
-    <div class="container">
-      <h1>Calculadora de precio: sin Iva, en 6 cuotas sin interés y en 12 cuotas con recargo del 30%</h1>
-      <h3>Ingrese el precio del producto en $</h3>
-      <input id="precioProducto" type="number">
-      <button id="calcular" class="btn">Calcular</button>
-      <button id="reinicio" class="btn disabled">Reiniciar formulario</button>
-      <div id="calculo" class="calculo">
-        
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="//res.cloudinary.com/hdsqazxtw/image/upload/v1558445734/favicon-32x32_fy92aq.png">
+  <title>CoderHouse Js TP03</title>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Calculadora de precio: sin Iva, en 6 cuotas sin interés y en 12 cuotas con recargo del 30%</h1>
+    <h3>Ingrese el nombre del producto</h3>
+    <input id="nombreProducto" type="text">
+    <h3>Ingrese el precio del producto en $</h3>
+    <input id="precioProducto" type="number">
+
+    <select id="elegirProducto" name="producto">
+      <option>Producto 1</option>
+    </select>
+
+    <button id="calcular" class="btn">Calcular</button>
+    <button id="reinicio" class="btn disabled">Reiniciar formulario</button>
+    <div id="calculo" class="calculo">
+
     </div>
-    <script src="script.js"></script>
-  </body>
+  </div>
+  <script src="script.js"></script>
+</body>
+
 </html>
