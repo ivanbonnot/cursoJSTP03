@@ -29,14 +29,6 @@ body {
   text-align: center;
 }
 
-.calculo div {
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  line-height: 25px;
-  max-width: 600px;
-  white-space: nowrap;
-}
-
 input {
   margin: 10px;
   text-align: center;
@@ -52,16 +44,24 @@ h3 {
   opacity: 0.5;
 }
 
+
 .btn {
   background-color: #9f68e0;
   color: #fff;
   border: 0;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
   padding: 14px 40px;
   margin: 10px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.error div {
+  color: red;
+  border: 1px solid rgba(253, 2, 2, 0.4);
+  border-radius: 2.5px;
+  padding: 5px;
 }
 
 #reinicio:disabled {
@@ -89,7 +89,7 @@ h3 {
 
 div .elegirProd {
   border-style: groove;
-  border-radius: 10px;
+  border-radius: 5px;
   margin: 20px;
   padding: 10px;
 }
@@ -101,4 +101,15 @@ div #elegirProducto {
   font-weight: 400;
   color: white;
   background-color: #9f68e0;
+}
+
+.calculo {
+  display: flex;
+  flex-direction: column ;
+  align-items: center;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  line-height: 25px;
+  max-width: 600px;
+  white-space: nowrap;
 }
