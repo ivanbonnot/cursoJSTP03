@@ -19,8 +19,9 @@ reiniciar.addEventListener('click', () => limpiarHTML())
 function validarInput() {
     const precioProducto = parseInt(precioProductoString.value)
 
-    if (precioProducto === '' || precioProducto <= 0 || isNaN(precioProducto)) {
+    if (precioProducto === '' || precioProducto <= 0 || isNaN(precioProducto) || document.getElementById('nombreProducto').value == '') {
         console.log("ingrese un precio válido")
+        mostrarError()
     } else {
         calculo(precioProducto)
     }
@@ -40,9 +41,9 @@ function calculo(precio) {
 function agregarAlHTML(precio, sinIva, seisCuotas, doceCuotas, totalEnDoce) {
 
     const parrafo = document.createElement('div');
-    parrafo.innerHTML = `<p>El precio sin IVA es: $${sinIva}</p> 
-                         <p>El precio en 6 cuotas es: $${seisCuotas}. El total es el mismo </p>
-                         <p>El precio en 12 cuotas con recargo es: $${doceCuotas}. El total es de $${totalEnDoce}</p>`
+    parrafo.innerHTML = `<p>El precio <strong>sin IVA</strong> es: $${sinIva}</p> 
+                         <p>El precio en <strong>6 cuotas</strong> es: $${seisCuotas}. El total es el mismo </p>
+                         <p>El precio en <strong>12 cuotas</strong> con recargo es: $${doceCuotas}. El total es de $${totalEnDoce}</p>`
     mostrarCalculo.appendChild(parrafo);
     calcular.disabled = true
     reiniciar.disabled = false
@@ -53,7 +54,7 @@ function agregarAlHTML(precio, sinIva, seisCuotas, doceCuotas, totalEnDoce) {
     
 }
 
-//Agregar al Array
+//Agregar el nombre del prod y el precio al Array
 function agregarAlArray(precioProducto) {
 
     const nombreProducto = document.getElementById('nombreProducto').value
@@ -100,12 +101,26 @@ function mostrarProductoAnterior() {
     mostrarCalculo.appendChild(parrafo);
 }
 
+//Si tengo un solo producto agregado al select, mostrarlo al hacer click
 function verificacionUnSoloProducto() {
     if( productosLista.length === 1) {
         console.log("un solo elem")
         mostrarProductoAnterior()
     }
 }
+
+//Mostrar error si falta nombre de producto o precio
+function mostrarError() {
+    const errorDiv = document.querySelector('.error')
+    const error = document.createElement('div');
+    error.innerHTML = `Falta ingresar nombre o precio `
+    errorDiv.appendChild(error);
+
+    setTimeout(() => {
+        errorDiv.removeChild(error);
+    }, 3000);
+}
+
 
 //Limpiar formulario
 function limpiarHTML() {
