@@ -57,6 +57,12 @@ h3 {
   cursor: pointer;
 }
 
+#eliminar {
+  padding: 10px 30px;
+  margin-top: 0px;
+  text-decoration: none;
+}
+
 .error div {
   color: red;
   border: 1px solid rgba(253, 2, 2, 0.4);
@@ -101,6 +107,7 @@ div #elegirProducto {
   font-weight: 400;
   color: white;
   background-color: #9f68e0;
+  text-align: center;
 }
 
 .calculo {

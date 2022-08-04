@@ -2,17 +2,24 @@ const precioProductoString = document.getElementById("precioProducto");
 const elegirProducto = document.getElementById("elegirProducto");
 const calcular = document.getElementById("calcular");
 const reiniciar = document.getElementById("reinicio");
-const mostrarCalculo = document.getElementById("calculo");
+const mostrarCalculo = document.querySelector("#calculo");
 
 reiniciar.disabled = true;
 elegirProducto.disabled = true;
 
 let productosLista = [];
 
-calcular.addEventListener("click", () => validarInput());
-elegirProducto.addEventListener("change", () => mostrarProductoAnterior());
-elegirProducto.addEventListener("click", () => verificacionUnSoloProducto());
-reiniciar.addEventListener("click", () => limpiarHTML());
+eventListeners()
+
+function eventListeners() {
+  calcular.addEventListener("click", validarInput);
+  elegirProducto.addEventListener("change", mostrarProductoAnterior);
+  elegirProducto.addEventListener("click", verificacionUnSoloProducto);
+  mostrarCalculo.addEventListener("click", eliminarProducto);
+  reiniciar.addEventListener("click", limpiarHTML);
+}
+  
+
 
 //Validar input
 function validarInput() {
@@ -24,7 +31,6 @@ function validarInput() {
     isNaN(precioProducto) ||
     document.getElementById("nombreProducto").value == ""
   ) {
-    console.log("ingrese un precio válido");
     mostrarError();
   } else {
     calculo(precioProducto);
@@ -68,17 +74,13 @@ function agregarAlArray(precioProducto) {
 
   productosLista = [...productosLista, productoObj];
 
-  console.log(productosLista);
-
-  while (elegirProducto.firstChild) {
-    elegirProducto.removeChild(elegirProducto.firstChild);
-  }
-
+  limpiarSelect();
   agregarAlSelect();
 }
 
 //Agregar producto al select
 function agregarAlSelect() {
+  limpiarSelect()
   productosLista.forEach((producto) => {
     const elem = document.createElement("option");
     elem.innerHTML = `
@@ -92,7 +94,6 @@ function agregarAlSelect() {
 function mostrarProductoAnterior() {
   limpiarHTML();
   const elegirProductoValue = document.getElementById("elegirProducto").value;
-  console.log(elegirProductoValue);
 
   let mostrarProd = productosLista.filter(
     (prod) => prod.producto == `${elegirProductoValue}`
@@ -101,8 +102,10 @@ function mostrarProductoAnterior() {
   const parrafo = document.createElement("div");
   parrafo.classList.add("prodAnterior");
   parrafo.innerHTML = `<p>Producto: <strong>${mostrarProd[0].producto}</strong></p> 
-                         <p>El precio es: <strong>$${mostrarProd[0].precio}</strong></p>`;
+                         <p>El precio es: <strong>$${mostrarProd[0].precio}</strong></p>
+                         <a href="#" class="btn eliminar-btn" id="eliminar" data-id="${mostrarProd[0].id}">Borrar</a>`;
   mostrarCalculo.appendChild(parrafo);
+  
 }
 
 //Si tengo un solo producto agregado al select, mostrarlo al hacer click
@@ -111,6 +114,24 @@ function verificacionUnSoloProducto() {
     console.log("un solo elem");
     mostrarProductoAnterior();
   }
+}
+
+//Eliminar producto guardado en el array, que se muestra en el select del html
+function eliminarProducto(e) {
+  console.log(mostrarCalculo)
+  e.preventDefault()
+  
+  if(e.target.classList.contains('eliminar-btn') ) {
+ 
+    const producto = e.target.parentElement.parentElement;
+    const productoId = producto.querySelector('a').getAttribute('data-id');
+    
+    productosLista = productosLista.filter(producto => producto.id != productoId);
+    
+    limpiarProductoAnterior();
+    agregarAlSelect();
+}
+
 }
 
 //Mostrar error si falta nombre de producto o precio
@@ -137,15 +158,20 @@ function limpiarHTML() {
   calcular.disabled = false;
 }
 
+ //Borrar texto de producto anterior al presionar btn Calcular
 function limpiarProductoAnterior() {
-  //Borrar texto de producto anterior al presionar btn Calcular
   if (document.querySelector(".prodAnterior")) {
-    console.log(document.querySelector(".prodAnterior"));
-
     while (document.querySelector(".prodAnterior").firstChild) {
       document
         .querySelector(".prodAnterior")
         .removeChild(document.querySelector(".prodAnterior").firstChild);
     }
+  }
+}
+
+//Funcion para limpiar el Select del HTML
+function limpiarSelect() {
+  while (elegirProducto.firstChild) {
+    elegirProducto.removeChild(elegirProducto.firstChild);
   }
 }
