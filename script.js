@@ -19,10 +19,10 @@ function eventListeners() {
   reiniciar.addEventListener("click", limpiarHTML);
 
   document.addEventListener('DOMContentLoaded', () => {
-    productosLista = JSON.parse( localStorage.getItem('productos') ) || []  ;
+    productosLista = JSON.parse(localStorage.getItem('productos')) || [];
     productosLista.length === 0 ? elegirProducto.disabled = true : elegirProducto.disabled = false;
     agregarAlSelect()
-});
+  });
 }
 
 
@@ -76,6 +76,7 @@ function agregarAlArray(precioProducto) {
     id: Date.now(),
     producto: nombreProducto,
     precio: precioProducto,
+    date: new Date().toLocaleDateString()
   };
 
   productosLista = [...productosLista, productoObj];
@@ -106,11 +107,14 @@ function mostrarProductoAnterior() {
     (prod) => prod.producto == `${elegirProductoValue}`
   );
 
+  const date =  mostrarProd[0].date;
+  
   const parrafo = document.createElement("div");
   parrafo.classList.add("prodAnterior");
   parrafo.innerHTML = `<p>Producto: <strong>${mostrarProd[0].producto}</strong></p> 
-                         <p>El precio es: <strong>$${mostrarProd[0].precio}</strong></p>
-                         <a href="#" class="btn eliminar-btn" id="eliminar" data-id="${mostrarProd[0].id}">Borrar</a>`;
+                       <p>Agregado el dia: <strong>${date}</strong></p>
+                       <p>El precio es: <strong>$${mostrarProd[0].precio}</strong></p>
+                       <a href="#" class="btn eliminar-btn" id="eliminar" data-id="${mostrarProd[0].id}">Borrar</a>`;
   mostrarCalculo.appendChild(parrafo);
 }
 
