@@ -5,7 +5,7 @@ const reiniciar = document.getElementById("reinicio");
 const mostrarCalculo = document.querySelector("#calculo");
 
 reiniciar.disabled = true;
-elegirProducto.disabled = true;
+// elegirProducto.disabled = true;
 
 let productosLista = [];
 
@@ -17,8 +17,14 @@ function eventListeners() {
   elegirProducto.addEventListener("click", verificacionUnSoloProducto);
   mostrarCalculo.addEventListener("click", eliminarProducto);
   reiniciar.addEventListener("click", limpiarHTML);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    productosLista = JSON.parse( localStorage.getItem('productos') ) || []  ;
+    productosLista.length === 0 ? elegirProducto.disabled = true : elegirProducto.disabled = false;
+    agregarAlSelect()
+});
 }
-  
+
 
 
 //Validar input
@@ -74,6 +80,7 @@ function agregarAlArray(precioProducto) {
 
   productosLista = [...productosLista, productoObj];
 
+  localStorage.setItem('productos', JSON.stringify(productosLista));
   limpiarSelect();
   agregarAlSelect();
 }
@@ -105,33 +112,29 @@ function mostrarProductoAnterior() {
                          <p>El precio es: <strong>$${mostrarProd[0].precio}</strong></p>
                          <a href="#" class="btn eliminar-btn" id="eliminar" data-id="${mostrarProd[0].id}">Borrar</a>`;
   mostrarCalculo.appendChild(parrafo);
-  
 }
 
 //Si tengo un solo producto agregado al select, mostrarlo al hacer click
 function verificacionUnSoloProducto() {
   if (productosLista.length === 1) {
-    console.log("un solo elem");
     mostrarProductoAnterior();
   }
 }
 
 //Eliminar producto guardado en el array, que se muestra en el select del html
 function eliminarProducto(e) {
-  console.log(mostrarCalculo)
+
   e.preventDefault()
-  
-  if(e.target.classList.contains('eliminar-btn') ) {
- 
+
+  if (e.target.classList.contains('eliminar-btn')) {
     const producto = e.target.parentElement.parentElement;
     const productoId = producto.querySelector('a').getAttribute('data-id');
-    
+    localStorage.removeItem('productos'); //Remuevo el array entero del LS
     productosLista = productosLista.filter(producto => producto.id != productoId);
-    
+    localStorage.setItem('productos', JSON.stringify(productosLista)); //Seteo el nuevo array sin el producto elegido para borrar
     limpiarProductoAnterior();
     agregarAlSelect();
-}
-
+  }
 }
 
 //Mostrar error si falta nombre de producto o precio
@@ -158,7 +161,7 @@ function limpiarHTML() {
   calcular.disabled = false;
 }
 
- //Borrar texto de producto anterior al presionar btn Calcular
+//Borrar texto de producto anterior al presionar btn Calcular
 function limpiarProductoAnterior() {
   if (document.querySelector(".prodAnterior")) {
     while (document.querySelector(".prodAnterior").firstChild) {
