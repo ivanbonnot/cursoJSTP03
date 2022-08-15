@@ -63,11 +63,12 @@ h3 {
   text-decoration: none;
 }
 
-.error div {
+.error-uno div, .error-dos div{
   color: red;
   border: 1px solid rgba(253, 2, 2, 0.4);
   border-radius: 2.5px;
   padding: 5px;
+  margin-top: 5px;
 }
 
 #reinicio:disabled {
@@ -102,7 +103,7 @@ div .elegirProd {
 
 div .elegirProd h4 {
   margin: 2px 0 5px 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: rgb(172, 171, 171);
 }
 

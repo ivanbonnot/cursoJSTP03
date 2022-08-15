@@ -37,7 +37,7 @@ function validarInput() {
     isNaN(precioProducto) ||
     document.getElementById("nombreProducto").value == ""
   ) {
-    mostrarError();
+    mostrarError('Falta ingresar nombre o precio', 1);
   } else {
     calculo(precioProducto);
   }
@@ -76,7 +76,7 @@ function agregarAlArray(precioProducto) {
     id: Date.now(),
     producto: nombreProducto,
     precio: precioProducto,
-    date: new Date().toLocaleDateString()
+    fecha: new Date().toLocaleDateString()
   };
 
   productosLista = [...productosLista, productoObj];
@@ -102,19 +102,24 @@ function agregarAlSelect() {
 function mostrarProductoAnterior() {
   limpiarHTML();
   const elegirProductoValue = document.getElementById("elegirProducto").value;
-
+  console.log(elegirProductoValue)
   let mostrarProd = productosLista.filter(
     (prod) => prod.producto == `${elegirProductoValue}`
   );
 
-  const date =  mostrarProd[0].date;
-  
+  if (mostrarProd.length >= 2) {
+    mostrarError('Hay dos productos con el mismo nombre', 2)
+  }
+
+  const [prod] = mostrarProd
+  const { producto, fecha, precio, id } = prod
+  console.log()
   const parrafo = document.createElement("div");
   parrafo.classList.add("prodAnterior");
-  parrafo.innerHTML = `<p>Producto: <strong>${mostrarProd[0].producto}</strong></p> 
-                       <p>Agregado el dia: <strong>${date}</strong></p>
-                       <p>El precio es: <strong>$${mostrarProd[0].precio}</strong></p>
-                       <a href="#" class="btn eliminar-btn" id="eliminar" data-id="${mostrarProd[0].id}">Borrar</a>`;
+  parrafo.innerHTML = `<p>Producto: <strong>${producto}</strong></p> 
+                       <p>Agregado el dia: <strong>${fecha}</strong></p>
+                       <p>El precio es: <strong>$${precio}</strong></p>
+                       <a href="#" class="btn eliminar-btn" id="eliminar" data-id="${id}">Borrar</a>`;
   mostrarCalculo.appendChild(parrafo);
 }
 
@@ -136,21 +141,32 @@ function eliminarProducto(e) {
     localStorage.removeItem('productos'); //Remuevo el array entero del LS
     productosLista = productosLista.filter(producto => producto.id != productoId);
     localStorage.setItem('productos', JSON.stringify(productosLista)); //Seteo el nuevo array sin el producto elegido para borrar
+    productosLista.length === 0 ? elegirProducto.disabled = true : elegirProducto.disabled = false;
     limpiarProductoAnterior();
     agregarAlSelect();
   }
 }
 
 //Mostrar error si falta nombre de producto o precio
-function mostrarError() {
-  const errorDiv = document.querySelector(".error");
+function mostrarError(mensaje, ubicacion) {
+  const errorUnoDiv = document.querySelector(".error-uno");
+  const errorDosDiv = document.querySelector(".error-dos");
   const error = document.createElement("div");
-  error.innerHTML = `Falta ingresar nombre o precio `;
-  errorDiv.appendChild(error);
+  error.innerHTML = `${mensaje} `;
 
-  setTimeout(() => {
-    errorDiv.removeChild(error);
-  }, 3000);
+  if (ubicacion === 1) {
+
+    errorUnoDiv.appendChild(error);
+    setTimeout(() => {
+      errorUnoDiv.removeChild(error);
+    }, 3000);
+
+  } else {
+    errorDosDiv.appendChild(error)
+    setTimeout(() => {
+      errorDosDiv.removeChild(error);
+    }, 3000);
+  }
 }
 
 //Limpiar formulario
