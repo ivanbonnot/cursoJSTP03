@@ -132,7 +132,6 @@ function verificacionUnSoloProducto() {
 
 //Eliminar producto guardado en el array, que se muestra en el select del html
 function eliminarProducto(e) {
-
   e.preventDefault()
 
   if (e.target.classList.contains('eliminar-btn')) {
